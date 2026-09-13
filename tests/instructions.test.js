@@ -59,3 +59,30 @@ test('Antigravity preserves PreInvocation protocol, switches and persists off ac
   assert.deepEqual(invoke('normal mode'), []);
   assert.deepEqual(invoke('A later task'), []);
 });
+
+test('resume and compaction preserve selected mode and off; startup uses the default', t => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ponytail-resume-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const state = path.join(dir, '.ponytail-active');
+  const env = { ...process.env, PLUGIN_DATA: dir, PONYTAIL_DEFAULT_MODE: 'full', COPILOT_PLUGIN_DATA: '', CLAUDE_PLUGIN_ROOT: '' };
+  function start(source) {
+    const result = spawnSync(process.execPath, [path.join(__dirname, '..', 'hooks', 'ponytail-activate.js')], {
+      input: JSON.stringify({ source }), encoding: 'utf8', timeout: 3000, env,
+    });
+    assert.equal(result.status, 0, result.stderr);
+    return JSON.parse(result.stdout);
+  }
+  fs.writeFileSync(state, 'ultra');
+  for (const source of ['resume', 'compact']) {
+    assert.equal(start(source).systemMessage, 'PONYTAIL:ULTRA');
+    assert.equal(fs.readFileSync(state, 'utf8'), 'ultra');
+  }
+  fs.unlinkSync(state);
+  for (const source of ['resume', 'compact']) {
+    const output = start(source);
+    assert.equal(output.systemMessage, 'PONYTAIL:OFF');
+    assert.equal(output.hookSpecificOutput, undefined);
+    assert.equal(fs.existsSync(state), false);
+  }
+  assert.equal(start('startup').systemMessage, 'PONYTAIL:FULL');
+});

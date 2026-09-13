@@ -6,7 +6,7 @@ Upstream: https://github.com/DietrichGebert/ponytail
 
 Baseline: `356918eba965ee1eac64bd3a7f0dd02108350de5` (upstream main,
 plugin version 4.9.0, verified 2026-09-13). Personal version:
-`4.9.0+personal.1`. The MIT license and upstream author attribution are retained.
+`4.9.0+personal.2`. The MIT license and upstream author attribution are retained.
 
 The fork owns behavior. MyAgents owns the immutable revision, installation
 relationships and local deployment record. Former MyAgents skill copies are
@@ -19,6 +19,11 @@ scoped emergency instructions if both are unavailable. Commands and the help
 card follow the same conditions. Existing lifecycle events, protocol envelopes,
 explicit levels and off controls remain; no task classifier or model call is
 added. A mode switch now supplies its selected body as well as the status message.
+Resume and compaction retain the current level or off using the existing flag;
+startup and clear still initialize the configured default. This fixes the observed
+upstream reset from ultra to full on resume without adding an auto-mode state
+machine. State retains the upstream host-level scope; concurrent sessions are
+not independently isolated by this patch.
 
 The personal Antigravity adapter is `hooks/ponytail-antigravity.js`. It preserves
 the previously configured PreInvocation `injectSteps[].ephemeralMessage` output

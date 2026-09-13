@@ -14,14 +14,19 @@ const {
   clearMode,
   isCodex,
   isCopilot,
+  readMode,
   setMode,
   writeHookOutput,
 } = require('./ponytail-runtime');
 
+function activate(source) {
 const claudeDir = getClaudeDir();
 const settingsPath = path.join(claudeDir, 'settings.json');
 
-const mode = getDefaultMode();
+// Resume/compaction continue the task and its explicit selection. An absent
+// flag means off in the existing runtime; only startup/clear reset the default.
+const mode = source === 'resume' || source === 'compact'
+  ? (readMode() || 'off') : getDefaultMode();
 
 // "off" mode — skip activation entirely, don't write flag or emit rules
 if (mode === 'off') {
@@ -94,3 +99,19 @@ try {
 } catch (e) {
   // Silent fail — stdout closed/EPIPE at hook exit must not surface as a hook failure
 }
+}
+
+let input = '';
+let done = false;
+function finish() {
+  if (done) return;
+  done = true;
+  let source = 'startup';
+  try { source = JSON.parse(input.replace(/^\uFEFF/, '')).source || source; } catch (_) {}
+  activate(source);
+}
+process.stdin.on('data', chunk => { input += chunk; });
+process.stdin.on('end', finish);
+// Same bounded stdin contract as the mode tracker on Windows.
+process.stdin.on('error', () => { finish(); process.exit(0); });
+setTimeout(() => { finish(); process.exit(0); }, 1000).unref();
