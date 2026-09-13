@@ -1,3 +1,7 @@
 {
-  "name": "ponytail"
+  "name": "ponytail",
+  "version": "4.9.0+personal.1",
+  "description": "Conditional simplification for coding implementation choices and proposed complexity.",
+  "repository": "https://github.com/Yongzhaooo/ponytail",
+  "license": "MIT"
 }

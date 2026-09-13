@@ -15,7 +15,7 @@ const root = path.join(__dirname, '..');
 const MANIFEST = 'gemini-extension.json';
 const EXTENSION_NAME = 'ponytail';
 // Floating refs are a supply-chain footgun; the manifest version must be pinned.
-const PINNED_SEMVER = /^\d+\.\d+\.\d+$/;
+const PINNED_SEMVER = /^\d+\.\d+\.\d+(?:\+[0-9A-Za-z.-]+)?$/;
 const VERSIONED_MANIFESTS = [
   'gemini-extension.json',
   '.claude-plugin/plugin.json',

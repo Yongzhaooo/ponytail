@@ -1,3 +1,7 @@
+> Personal fork: [conditional simplification and pinned deployment](docs/personal-fork.md).
+> The upstream documentation below is retained for reference. Use the managed fork revision,
+> not its upstream npm install or auto-update instructions.
+
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/logo-dark.png">

@@ -71,7 +71,7 @@ function finish() {
           writeHookOutput(
             'UserPromptSubmit',
             mode,
-            'PONYTAIL MODE CHANGED — level: ' + mode,
+            'PONYTAIL MODE CHANGED — level: ' + mode + '\n\n' + getPonytailInstructions(mode),
           );
         }
       } else if (mode === 'off') {

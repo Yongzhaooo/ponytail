@@ -50,7 +50,7 @@ test('Hermes plugin manifest matches runtime skills, hooks, commands, and packag
     .sort();
 
   assert.match(manifest, /^name:\s*ponytail$/m);
-  assert.match(manifest, new RegExp(`^version:\\s*${packageJson.version}$`, 'm'));
+  assert.equal(manifest.match(/^version:\s*(.+)$/m)[1], packageJson.version);
   assert.match(manifest, new RegExp(`^author:\\s*${packageJson.author.name}$`, 'm'));
   assert.deepEqual(commands.filter((name) => manifest.includes(`  - ${name}`)), commands);
   assert.deepEqual(skillDirs.filter((name) => manifest.includes(`  - ${name}`)), skillDirs);
@@ -107,7 +107,7 @@ print(json.dumps({'ctx': ctx}))
   const { ctx } = JSON.parse(output);
 
   assert.match(ctx, /PONYTAIL MODE ACTIVE — level: ultra/);
-  assert.match(ctx, /The best\s+code is the code never written/);
+  assert.match(ctx, /meets the complete requirements/);
   assert.match(ctx, /ultra/i);
   assert.doesNotMatch(ctx, /^---/);
   assert.doesNotMatch(ctx, /\|\s*\*\*Lite\*\*/i);

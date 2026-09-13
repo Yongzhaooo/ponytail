@@ -14,7 +14,7 @@ const fs = require('fs');
 const path = require('path');
 
 const root = path.join(__dirname, '..');
-const PINNED_SEMVER = /^\d+\.\d+\.\d+$/;
+const PINNED_SEMVER = /^\d+\.\d+\.\d+(?:\+[0-9A-Za-z.-]+)?$/;
 
 // Every file that declares the project version, and who reads it. Add new host
 // manifests here so a future ecosystem can't drift unnoticed.

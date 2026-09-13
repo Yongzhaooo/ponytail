@@ -141,11 +141,11 @@ test("filterSkillBodyForMode keeps rule bullets that contain a colon", () => {
 
   const filtered = filterSkillBodyForMode(body, "full");
 
-  assert.ok(filtered.includes("No unrequested abstractions"));
-  assert.ok(filtered.includes("Mark deliberate simplifications that cut a real corner"));
-  assert.ok(filtered.includes("`ponytail:` comment naming the ceiling and upgrade path"));
-  // The Intensity examples are still filtered down to the active mode.
-  assert.ok(filtered.includes('full: "`@lru_cache'));
-  assert.ok(!filtered.includes('lite: "Done'));
-  assert.ok(!filtered.includes('ultra: "No cache'));
+  // Every non-mode body line must survive; avoid pinning the old prose/examples.
+  const sharedLines = body.replace(/^---[\s\S]*?---\s*/, '').split(/\r?\n/)
+    .filter(line => !/^\|\s*\*\*(lite|full|ultra)\*\*/.test(line));
+  for (const line of sharedLines) assert.ok(filtered.includes(line));
+  assert.ok(filtered.includes('| **full** |'));
+  assert.ok(!filtered.includes('| **lite** |'));
+  assert.ok(!filtered.includes('| **ultra** |'));
 });

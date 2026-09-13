@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "ponytail",
-      "description": "Forces the laziest solution that works. YAGNI, stdlib first, one line over fifty.",
+      "description": "Simplify implementation choices and proposed complexity while preserving the complete request.",
       "source": "./",
       "category": "productivity"
     }

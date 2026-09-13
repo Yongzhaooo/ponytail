@@ -14,9 +14,9 @@ write flag files, or persist anything.
 
 | Level | Trigger | What change |
 |-------|---------|-------------|
-| **Lite** | `/ponytail lite` | Build what's asked, name the lazier alternative in one line. |
-| **Full** | `/ponytail` | The ladder enforced: YAGNI → stdlib → native → one line → minimum. Default. |
-| **Ultra** | `/ponytail ultra` | YAGNI extremist. Deletion before addition. Challenges requirements before building. |
+| **Lite** | `/ponytail lite` | Fulfil the request; mention simpler alternatives for material tradeoffs. |
+| **Full** | `/ponytail` | Simplest complete implementation; existing code, stdlib and platform first. Default. |
+| **Ultra** | `/ponytail ultra` | Question speculative work more strongly; preserve explicit requirements. |
 
 Level sticks until changed or session end.
 
@@ -37,12 +37,12 @@ slash commands).
 
 ## Deactivate
 
-Say "stop ponytail" or "normal mode". Resume anytime with `/ponytail`.
+Say "stop ponytail" or "normal mode". Resume with `/ponytail full` or another explicit level.
 `/ponytail off` also works.
 
 ## Configure Default Mode
 
-Default mode = `full`, auto-active every session. Change it:
+Default mode = `full`; reminders are automatic, applicability is task-dependent. Change it:
 
 **Environment variable** (highest priority):
 ```bash
@@ -61,7 +61,7 @@ Resolution: env var > config file > `full`.
 
 ## Update
 
-Enable auto-update once: open `/plugin`, go to Marketplaces, pick ponytail, Enable auto-update. Claude Code then pulls new versions at startup (run `/reload-plugins` when it prompts). Manual refresh: `/plugin marketplace update ponytail` then `/reload-plugins`.
+This personal fork is installed at a fixed revision. Update the fork, validate it, then update the pinned installation through the managing repository. Do not switch back to the upstream npm package or enable unpinned updates.
 
 If `/plugin` is not recognized, your Claude Code is out of date. Update it (`npm install -g @anthropic-ai/claude-code@latest`, or `brew upgrade claude-code`) and restart. Other hosts use their own update flow.
 
