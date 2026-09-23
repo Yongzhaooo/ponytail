@@ -1,37 +1,28 @@
 ---
 name: ponytail-audit
-description: "Audit the whole repo for over-engineering. A ranked list of what to delete, simplify, or replace with stdlib or native features."
+description: "Audit a codebase for evidence-backed simplification and missed reuse. Rank maintenance costs; preserve contracts and useful invariants."
 homepage: https://github.com/DietrichGebert/ponytail
 license: MIT
 ---
 
-ponytail-review, repo-wide. Scan the whole tree instead of a diff. Rank
-findings biggest cut first.
+Inspect the requested codebase boundary rather than a diff. Report material coverage
+gaps in a whole-repository audit. Keep this a read-only complexity review.
 
-## Tags
+Look for duplicated mechanisms, caller coordination, unused configuration, or existing
+code/library/platform facilities that could replace custom work. Trace callers and
+compare relevant semantics, errors, ownership, context, compatibility, and performance;
+consult focused history when intent is unclear.
 
-Same as ponytail-review:
+Single implementations, one-caller helpers, wrappers, and file size are leads, not defects.
+Retain useful invariants, lifetime rules, test seams, and public-interface evolution.
+Deleting a layer is not simpler if its responsibilities spread among callers. Hypothetical
+future features alone do not justify flexibility.
 
-- `delete:` dead code, unused flexibility, speculative feature. Replacement: nothing.
-- `stdlib:` hand-rolled thing the standard library ships. Name the function.
-- `native:` dependency or code doing what the platform already does. Name the feature.
-- `yagni:` abstraction with one implementation, config nobody sets, layer with one caller.
-- `shrink:` same logic, fewer lines. Show the shorter form.
+Rank findings by maintenance impact and confidence: location, evidence, concrete cost,
+and smallest replacement preserving requirements, safety, validation, compatibility,
+and meaningful tests. Mark assumptions; optional tags are delete, stdlib, native, yagni,
+and shrink. Note incidental defects separately from the complexity findings.
 
-## Hunt
-
-Deps the stdlib or platform already ships, single-implementation interfaces,
-factories with one product, wrappers that only delegate, files exporting one
-thing, dead flags and config, hand-rolled stdlib.
-
-## Output
-
-One line per finding, ranked: `<tag> <what to cut>. <replacement>. [path]`.
-End with `net: -<N> lines, -<M> deps possible.` Nothing to cut: `Lean already. Ship.`
-
-## Boundaries
-
-Scope: over-engineering and complexity only. Correctness bugs, security holes,
-and performance are explicitly out of scope. Route them to a normal review
-pass. Lists findings, applies nothing. One-shot.
-"stop ponytail-audit" or "normal mode" to revert.
+If none are supported, say "No actionable complexity findings." State material coverage
+gaps without implying correctness or readiness to ship; omit deletion totals.
+"stop ponytail-audit" or "normal mode" ends this focused audit mode.

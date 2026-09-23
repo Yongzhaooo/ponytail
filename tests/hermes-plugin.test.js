@@ -161,7 +161,9 @@ print(json.dumps({'ctx': ctx}))
   const { ctx } = JSON.parse(output);
   assert.match(ctx, /PONYTAIL MODE ACTIVE — level: review/);
   assert.match(ctx, /Review diffs for unnecessary complexity/);
-  assert.match(ctx, /net: -<N> lines possible/);
+  const reviewBody = fs.readFileSync(path.join(root, 'skills', 'ponytail-review', 'SKILL.md'), 'utf8')
+    .replace(/\r\n/g, '\n').replace(/^---\n[\s\S]*?\n---\n?/, '').trim();
+  assert.ok(ctx.includes(reviewBody), 'review mode must inject the complete canonical review body');
   assert.doesNotMatch(ctx, /^---/);
 });
 

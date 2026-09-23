@@ -18,8 +18,8 @@ const HOMEPAGE = 'https://github.com/DietrichGebert/ponytail';
 
 const DESCRIPTIONS = {
   'ponytail': 'Simplify coding implementation choices and proposed complexity; reuse existing code, stdlib and platform features. Preserve the complete request.',
-  'ponytail-review': 'Review a diff for over-engineering. Finds what to delete: reinvented stdlib, needless deps, speculative abstractions. One line per finding.',
-  'ponytail-audit': 'Audit the whole repo for over-engineering. A ranked list of what to delete, simplify, or replace with stdlib or native features.',
+  'ponytail-review': 'Review a diff for evidence-backed simplification and missed reuse. Preserve behavior, contracts and useful invariants; no line-count score.',
+  'ponytail-audit': 'Audit a codebase for evidence-backed simplification and missed reuse. Rank maintenance costs; preserve contracts and useful invariants.',
   'ponytail-debt': 'Harvest every ponytail: shortcut comment into one debt ledger, so deferrals get tracked instead of forgotten. One-shot report.',
   'ponytail-gain': 'Show ponytail measured impact as a scoreboard: less code, less cost, more speed, from the benchmark medians. One-shot display.',
   'ponytail-help': "Quick reference for ponytail's modes, skills, and commands. One-shot display.",
