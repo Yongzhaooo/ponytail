@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "ponytail",
-      "description": "Forces the laziest solution that works. YAGNI, stdlib first, one line over fifty.",
+      "description": "Lazy senior dev mode for coding changes: the smallest complete change, with the intended end state in view.",
       "source": "./",
       "category": "productivity"
     }

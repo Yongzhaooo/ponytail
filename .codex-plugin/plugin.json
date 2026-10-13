@@ -1,7 +1,7 @@
 {
   "name": "ponytail",
-  "version": "5.2.0",
-  "description": "Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.",
+  "version": "5.2.0+personal.20261013",
+  "description": "Lazy senior dev mode for coding changes: the smallest complete change, with the intended end state in view.",
   "author": {
     "name": "Dietrich Gebert",
     "url": "https://github.com/DietrichGebert"

@@ -53,6 +53,7 @@ const INVARIANTS = [
   'prevents data loss',
   'security',
   'accessibility',
+  'Simplicity limits the diff, not the understanding', // personal fork: minimal steps stay on the route to the end state
 ];
 
 const skill = read('skills/ponytail/SKILL.md');

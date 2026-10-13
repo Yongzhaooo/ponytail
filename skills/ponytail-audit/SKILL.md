@@ -62,6 +62,10 @@ tested and fixed later. This is a report the user asked for, so give it in full.
   fixtures, config, and string or dynamic references.
 - A shortcut marked with a `shortcut:` (or older `ponytail:`) comment that names its limit is a
   decision, not a finding, unless the expected load already crosses it.
+- A layer, wrapper or single-implementation interface is a lead, not proof:
+  keep it when it holds lifetime rules, invariants, a test seam or a supported
+  public interface. Removing it helps only when the complexity disappears
+  instead of spreading to callers.
 - Propose the smallest fix that works. Prefer fixes that delete code. Never
   add layers, frameworks or config the problem does not need.
 - No style taste, no "consider", no vague worries.

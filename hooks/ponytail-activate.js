@@ -189,7 +189,8 @@ function finish() {
   } catch (e) {
     // No payload, or an unparseable one: treat it as a fresh session
   }
-  activate(source === 'compact' ? (readMode() || 'off') : getDefaultMode());
+  // Personal fork: resume continues the same task too, so it keeps the level or off.
+  activate(source === 'compact' || source === 'resume' ? (readMode() || 'off') : getDefaultMode());
 }
 
 process.stdin.on('data', chunk => { input += chunk; });

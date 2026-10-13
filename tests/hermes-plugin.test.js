@@ -57,7 +57,8 @@ test('Hermes plugin manifest matches runtime skills, hooks, commands, and packag
     .sort();
 
   assert.match(manifest, /^name:\s*ponytail$/m);
-  assert.match(manifest, new RegExp(`^version:\\s*${packageJson.version}$`, 'm'));
+  // personal fork: escape the +build version before using it as a pattern
+  assert.match(manifest, new RegExp(`^version:\\s*${packageJson.version.replace(/[.+]/g, '\\$&')}$`, 'm'));
   assert.match(manifest, new RegExp(`^author:\\s*${packageJson.author.name}$`, 'm'));
   assert.deepEqual(commands.filter((name) => manifest.includes(`  - ${name}`)), commands);
   assert.deepEqual(skillDirs.filter((name) => manifest.includes(`  - ${name}`)), skillDirs);
