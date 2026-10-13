@@ -29,6 +29,11 @@ change; trace related callers when shared behavior or an interface changes.
 Fix the cause within that scope; do not patch a symptom or investigate unrelated
 paths just to follow a ritual.
 
+Simplicity limits the diff, not the understanding. When work crosses modules or
+stages, or changes an interface, data model, or deployment shape, know the
+intended end state first and keep each minimal step on the path to it, not a
+dead end that must be undone.
+
 ## Modes
 
 Default: **full**. Respect the user's selected level until changed or session end;

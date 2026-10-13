@@ -55,6 +55,7 @@ function getFallbackInstructions(mode) {
       'Reuse existing code, stdlib and platform features. Meet the complete requirements; ' +
       'line count alone does not decide. Execute a clear approach directly; no automatic alternatives report, ' +
       'whole-repo scan or audit. Read the affected code; trace related callers only for shared behavior or interface changes. ' +
+      'Simplicity limits the diff, not the understanding: for cross-module or multi-stage work, know the end state first and keep each step on its path. ' +
       'Preserve explicit features, trust-boundary validation, data-loss handling, security and accessibility. ' +
       'Respect lite (suggest material alternatives), full (simplest complete solution), ultra (question speculative work). ' +
       'Respect /ponytail off, stop ponytail and normal mode; resume with an explicit level.';
