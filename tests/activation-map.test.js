@@ -7,7 +7,7 @@ const { spawnSync } = require('node:child_process');
 
 const root = path.join(__dirname, '..');
 
-for (const scenario of ['blocked', 'failed', 'oversized', 'successful', 'disabled']) {
+for (const scenario of ['blocked', 'failed', 'oversized', 'successful', 'slow', 'disabled']) {
   test(`SessionStart preserves instructions when the optional map is ${scenario}`, (t) => {
     const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'ponytail activation '));
     t.after(() => fs.rmSync(temp, { recursive: true, force: true }));
@@ -23,6 +23,7 @@ for (const scenario of ['blocked', 'failed', 'oversized', 'successful', 'disable
         blocked: 'Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 10000); return "";',
         failed: 'throw new Error("map unavailable");',
         oversized: 'return "x".repeat(100000);',
+        slow: 'Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 1200); return "Codebase map: slowHelper";',
         disabled: 'require("node:fs").writeFileSync("map-ran", "yes"); return "unexpected map";',
       }[scenario];
       fs.writeFileSync(path.join(hooks, 'ponytail-map.js'),
@@ -34,7 +35,7 @@ for (const scenario of ['blocked', 'failed', 'oversized', 'successful', 'disable
       cwd: workspace,
       input: '',
       encoding: 'utf8',
-      timeout: 4000,
+      timeout: 5000,
       env: {
         ...process.env,
         CLAUDE_CONFIG_DIR: path.join(temp, 'claude'),
@@ -53,8 +54,11 @@ for (const scenario of ['blocked', 'failed', 'oversized', 'successful', 'disable
     assert.equal(output.hookEventName, 'SessionStart');
     assert.match(output.additionalContext, /PONYTAIL MODE ACTIVE — level: full/);
     assert.match(output.additionalContext, /Never cut:/);
+    assert.match(output.additionalContext, /## When structure needs a decision/);
     if (scenario === 'successful') {
       assert.match(output.additionalContext, /Codebase map[^]*lib\/: usefulHelper/);
+    } else if (scenario === 'slow') {
+      assert.match(output.additionalContext, /Codebase map: slowHelper/);
     } else {
       assert.doesNotMatch(output.additionalContext, /Codebase map|unexpected map|x{1000}/);
     }

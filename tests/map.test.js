@@ -4,6 +4,7 @@ const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const { spawnSync } = require('child_process');
 const { buildMap } = require('../hooks/ponytail-map');
 
 // The map is injected into the model's context: repo text that is not an identifier must never
@@ -27,4 +28,21 @@ const map = buildMap(dir);
 assert.ok(!/NOTICE|asking|leaked|outside/.test(map), map);
 assert.ok(map.includes('src/: Foo, Bar, baz'), map);
 assert.ok(map.includes('self.helper'), map);
+
+// A tracked-file listing over 1 MiB must not fall back to walking ignored files.
+function git(args, input = '') {
+  const result = spawnSync('git', args, { cwd: dir, input, encoding: 'utf8' });
+  assert.equal(result.status, 0, result.stderr || String(result.error));
+  return result.stdout.trim();
+}
+git(['init', '-q']);
+const blob = git(['hash-object', '-w', '--stdin'], '');
+const entries = [`100644 ${blob}\tsrc/a.js`];
+for (let i = 0; i < 10000; i++) entries.push(`100644 ${blob}\tz${'x'.repeat(110)}${i}.js`);
+git(['update-index', '--index-info'], entries.join('\n') + '\n');
+fs.writeFileSync(path.join(dir, '.gitignore'), 'ignored.js\n');
+fs.writeFileSync(path.join(dir, 'ignored.js'), 'export const ignoredValue = 1\n');
+const largeMap = buildMap(dir);
+assert.ok(largeMap.includes('src/: Foo, Bar, baz'), largeMap);
+assert.ok(!largeMap.includes('ignoredValue'), largeMap);
 fs.rmSync(dir, { recursive: true, force: true });

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const fs = require('fs');
 const path = require('path');
+const { getFallbackInstructions, getPonytailInstructions } = require('../hooks/ponytail-instructions');
 
 const root = path.join(__dirname, '..');
 
@@ -54,10 +55,24 @@ const INVARIANTS = [
   'security',
   'accessibility',
   'Simplicity limits the diff, not the understanding', // personal fork: minimal steps stay on the route to the end state
+  'Prefer the smallest diff among solutions that preserve correctness, clear ownership and testability',
 ];
 
 const skill = read('skills/ponytail/SKILL.md');
 const sources = [['skills/ponytail/SKILL.md', skill], ['AGENTS.md', agents]];
+const structure = canonical.match(/## When structure needs a decision\n[\s\S]*?(?=\n## The smallest complete change)/)[0].trim();
+for (const mode of ['lite', 'full', 'ultra']) {
+  for (const [label, text] of [
+    ['runtime', getPonytailInstructions(mode)],
+    ['fallback', getFallbackInstructions(mode)],
+  ]) {
+    if (!text.includes(structure) || text.includes('The shortest working diff wins')) {
+      console.error(`${label} ${mode} lost the structure decision or retained the old diff priority`);
+      failed = true;
+    }
+    sources.push([`${label} ${mode}`, text]);
+  }
+}
 for (const phrase of INVARIANTS) {
   for (const [label, text] of sources) {
     if (!text.includes(phrase)) {
